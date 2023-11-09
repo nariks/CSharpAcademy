@@ -1,0 +1,14 @@
+/Users/yuminary/Documents/Coding/CSharp/CSharpAcademy/MathGame/bin/Debug/net7.0/MathGame
+/Users/yuminary/Documents/Coding/CSharp/CSharpAcademy/MathGame/bin/Debug/net7.0/MathGame.deps.json
+/Users/yuminary/Documents/Coding/CSharp/CSharpAcademy/MathGame/bin/Debug/net7.0/MathGame.runtimeconfig.json
+/Users/yuminary/Documents/Coding/CSharp/CSharpAcademy/MathGame/bin/Debug/net7.0/MathGame.dll
+/Users/yuminary/Documents/Coding/CSharp/CSharpAcademy/MathGame/bin/Debug/net7.0/MathGame.pdb
+/Users/yuminary/Documents/Coding/CSharp/CSharpAcademy/MathGame/obj/Debug/net7.0/MathGame.GeneratedMSBuildEditorConfig.editorconfig
+/Users/yuminary/Documents/Coding/CSharp/CSharpAcademy/MathGame/obj/Debug/net7.0/MathGame.AssemblyInfoInputs.cache
+/Users/yuminary/Documents/Coding/CSharp/CSharpAcademy/MathGame/obj/Debug/net7.0/MathGame.AssemblyInfo.cs
+/Users/yuminary/Documents/Coding/CSharp/CSharpAcademy/MathGame/obj/Debug/net7.0/MathGame.csproj.CoreCompileInputs.cache
+/Users/yuminary/Documents/Coding/CSharp/CSharpAcademy/MathGame/obj/Debug/net7.0/MathGame.dll
+/Users/yuminary/Documents/Coding/CSharp/CSharpAcademy/MathGame/obj/Debug/net7.0/refint/MathGame.dll
+/Users/yuminary/Documents/Coding/CSharp/CSharpAcademy/MathGame/obj/Debug/net7.0/MathGame.pdb
+/Users/yuminary/Documents/Coding/CSharp/CSharpAcademy/MathGame/obj/Debug/net7.0/MathGame.genruntimeconfig.cache
+/Users/yuminary/Documents/Coding/CSharp/CSharpAcademy/MathGame/obj/Debug/net7.0/ref/MathGame.dll
