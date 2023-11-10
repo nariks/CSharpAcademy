@@ -18,9 +18,9 @@ do
     if (operation == "")
         break;
     
-        difficulty = ChooseDiffictulty();
-        QuizLength = ChooseQuizLength();
-        PlayGame(operation, difficulty, QuizLength);
+    difficulty = ChooseDiffictulty();
+    QuizLength = ChooseQuizLength();
+    PlayGame(operation, difficulty, QuizLength);
 
 } while (PlayAgain());
 
