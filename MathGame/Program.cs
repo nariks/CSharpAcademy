@@ -24,16 +24,7 @@ void ProcessInput()
     string game = "";
     bool validEntry = false;
 
-    do
-    {
-        Console.WriteLine("Enter a number from 1 to 5");
-        readResult = Console.ReadLine();
-        validEntry = int.TryParse(readResult, out gameChoice);
-        
-        if (gameChoice < 1 || gameChoice > 5)
-            validEntry = false;
-                
-    } while (!validEntry);
+    gameChoice = ReadUserInput();
 
     switch (gameChoice)
     {
@@ -54,114 +45,25 @@ void ProcessInput()
             break;
 
         case 5:
-        break;
-
         default:
-        break;
+            break;
     }
 
-    PlayGame(game);
-
-
-
+    if (gameChoice != 5)
+        PlayGame(game, ChooseDiffictulty());
 }
 
 
-// void additionGame()
-// {
-//     string readResult = "";
-//     int operand1, operand2, result;
-//     Random randomNumber = new Random();
-    
-//     Console.Clear();
-//     Console.WriteLine("Addition Game selected");
-    
-//     operand1 = randomNumber.Next(101);
-//     operand2 = randomNumber.Next(101);
-//     result = operand1 + operand2;
-
-//     Console.WriteLine($"What is {operand1} + {operand2}?");
-//     readResult = Console.ReadLine();
-
-//     if (int.Parse(readResult) == result)
-//         Console.WriteLine("That's correct. You scored 5 points");
-//     else
-//         Console.WriteLine("That's not correct.");
-
-
-// }
-
-// void subtractionGame()
-// {
-//     string readResult = "";
-//     int operand1, operand2, result;
-//     Random randomNumber = new Random();
-    
-//     Console.Clear();
-//     Console.WriteLine("Subtraction Game selected");
-    
-//     operand1 = randomNumber.Next(101);
-//     operand2 = randomNumber.Next(101);
-//     result = operand1 - operand2;
-
-//     Console.WriteLine($"What is {operand1} - {operand2}?");
-//     readResult = Console.ReadLine();
-
-//     if (int.Parse(readResult) == result)
-//         Console.WriteLine("That's correct. You scored 5 points");
-//     else
-//         Console.WriteLine("That's not correct.");
-// }
-
-// void multiplicationGame()
-// {
-//     string readResult = "";
-//     int operand1, operand2, result;
-//     Random randomNumber = new Random();
-    
-//     Console.Clear();
-//     Console.WriteLine("Subtraction Game selected");
-    
-//     operand1 = randomNumber.Next(11);
-//     operand2 = randomNumber.Next(11);
-//     result = operand1 * operand2;
-
-//     Console.WriteLine($"What is {operand1} * {operand2}?");
-//     readResult = Console.ReadLine();
-
-//     if (int.Parse(readResult) == result)
-//         Console.WriteLine("That's correct. You scored 5 points");
-//     else
-//         Console.WriteLine("That's not correct.");
-// }
-
-/* void divisionGame()
+int ChooseDiffictulty()
 {
-    string readResult = "";
-    int operand1, operand2, result;
-    Random randomNumber = new Random();
-    
     Console.Clear();
-    Console.WriteLine("Subtraction Game selected");
+    Console.WriteLine("Choose a difficulty level from 1 - 5");
+    Console.WriteLine("1 is Easiest and 5 is Hardest ");
     
-    operand1 = randomNumber.Next(101);
-    do 
-    {
-        operand2 = randomNumber.Next(1, 101);
-    } while (operand1 % operand2 != 0);
-    
-    result = operand1 / operand2;
+    return ReadUserInput();
+}
 
-    Console.WriteLine($"What is {operand1} / {operand2}?");
-    readResult = Console.ReadLine();
-
-    if (int.Parse(readResult) == result)
-        Console.WriteLine("That's correct. You scored 5 points");
-    else
-        Console.WriteLine("That's not correct.");
-} */
-
-void PlayGame(string game, string difficulty = "easy")
+void PlayGame(string game, int difficulty = 1)
 {
     string readResult = "";
     string operation = "";
@@ -172,40 +74,108 @@ void PlayGame(string game, string difficulty = "easy")
     Console.Clear();
     Console.WriteLine($"{game} selected");
     
-    operand1 = randomNumber.Next(101);
-    operand2 = randomNumber.Next(101);
+    int minValue = SetDifficultyLevel(difficulty);
+    operand1 = randomNumber.Next(minValue, minValue + 21);
+    operand2 = randomNumber.Next(minValue, minValue + 21);
 
-    if (game == "addition")
+    switch(game)
     {
-        result = operand1 + operand2;
-        operation = "+";
+        case "addition":
+            result = operand1 + operand2;
+            operation = "+";
+            break;
+
+        case "subtraction":
+            result = operand1 - operand2;
+            operation = "-";
+            break;
+
+        case "multiplication":
+            result = operand1 * operand2;
+            operation = "*";
+            break;
+
+        case "division":
+            while (operand1 % operand2 != 0) 
+            {
+                operand2 = randomNumber.Next(1, 101);
+             } 
+            result = operand1 / operand2;
+            operation = "/";
+            break;
+
+        default:
+            break;
     }
-    else if (game == "subtraction")
-    {
-        result = operand1 - operand2;
-        operation = "-";
-    }
-    else if (game == "multiplication")
-    {
-        result = operand1 * operand2;
-        operation = "*";
-    }
-    else if (game == "division")
-    {
-        while (operand1 % operand2 != 0); 
-        {
-            operand2 = randomNumber.Next(1, 101);
-        } 
-        result = operand1 / operand2;
-        operation = "/";
-    }
-        
+    
     Console.WriteLine($"What is {operand1} {operation} {operand2}?");
-    readResult = Console.ReadLine();
 
-    if (int.Parse(readResult) == result)
+    int answer = 0;
+    bool validEntry = false;
+
+    do
+    {
+        readResult = Console.ReadLine();
+        validEntry = int.TryParse(readResult, out answer);
+        if (!validEntry)
+            Console.WriteLine("Only numbers can be accepted as valid answer.");
+    
+    } while (!validEntry);
+    
+    if (answer == result)
         Console.WriteLine("That's correct. You scored 5 points");
     else
         Console.WriteLine("That's not correct.");
+}
+
+int SetDifficultyLevel (int difficulty)
+{
+    int minValue = 0;
+
+    switch(difficulty)
+    {
+        case 1:
+            minValue = 0;
+            break;
+        
+        case 2:
+            minValue = 20;
+            break;
+
+        case 3:
+            minValue = 40;
+            break;
+
+        case 4:
+            minValue = 60;
+            break;
+
+        case 5:
+            minValue = 80;
+            break;
+    }
+
+    return minValue;
+}
+
+int ReadUserInput()
+{
+    string readResult = "";
+    int userChoice = 0;
+    bool validEntry = false;
+
+    do
+    {
+        Console.WriteLine("Enter a number from 1 to 5");
+        readResult = Console.ReadLine();
+        validEntry = int.TryParse(readResult, out userChoice);
+        
+        if (userChoice < 1 || userChoice > 5)
+            validEntry = false;
+                
+    } while (!validEntry);
+
+    return userChoice;
+
 }
 
