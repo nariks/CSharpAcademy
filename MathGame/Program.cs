@@ -1,9 +1,30 @@
 ﻿
 using System.Diagnostics;
+using System.Net;
 using System.Numerics;
 
-DisplayMenu();
-ProcessInput();
+int gameChoice = 0;
+int difficulty = 0;
+int QuizLength = 1;
+string operation = "";
+
+
+do
+{
+    DisplayMenu();
+    gameChoice = ReadUserInput();
+    operation = ChooseOperation(gameChoice);
+
+    if (operation == "")
+        break;
+    
+        difficulty = ChooseDiffictulty();
+        QuizLength = ChooseQuizLength();
+        PlayGame(operation, difficulty, QuizLength);
+
+} while (PlayAgain());
+
+    
 
 void DisplayMenu()
 {
@@ -13,149 +34,146 @@ void DisplayMenu()
     Console.WriteLine("2 - Subtraction Game");
     Console.WriteLine("3 - Multiplication Game");
     Console.WriteLine("4 - Division Game");
-    Console.WriteLine("5 - End Game");
+    Console.WriteLine("5 - End Game\n");
 
 }
 
-void ProcessInput()
+string ChooseOperation(int gameChoice)
 {
-    int gameChoice = 0;
-    string readResult = "";
-    string game = "";
-    bool validEntry = false;
-
-    gameChoice = ReadUserInput();
-
     switch (gameChoice)
     {
         case 1:
-            game = "addition";
-            break;
+            return "addition";
 
         case 2:
-            game = "subtraction";
-            break;
+            return "subtraction";
 
         case 3:
-            game = "multiplication";
-            break;
+            return "multiplication";
 
         case 4:
-            game = "division";;
-            break;
+            return "division";
 
         case 5:
         default:
-            break;
+            return "";
     }
-
-    if (gameChoice != 5)
-        PlayGame(game, ChooseDiffictulty());
 }
-
 
 int ChooseDiffictulty()
 {
     Console.Clear();
     Console.WriteLine("Choose a difficulty level from 1 - 5");
-    Console.WriteLine("1 is Easiest and 5 is Hardest ");
+    Console.WriteLine("1 is Easiest and 5 is Hardest\n ");
     
     return ReadUserInput();
 }
 
-void PlayGame(string game, int difficulty = 1)
+int ChooseQuizLength()
+{
+    Console.Clear();
+    Console.WriteLine("Choose number of quiz questions: 1 - 5");
+
+    return ReadUserInput();
+    
+}
+
+void PlayGame(string game, int difficulty = 1, int QuizLength = 1)
 {
     string readResult = "";
     string operation = "";
     int operand1, operand2;
     int result = 0;
+    const int stepSize = 21;
     Random randomNumber = new Random();
     
     Console.Clear();
-    Console.WriteLine($"{game} selected");
+    Console.WriteLine($"{game.ToUpper()} selected");
+    Console.WriteLine("--------------------");
     
     int minValue = SetDifficultyLevel(difficulty);
-    operand1 = randomNumber.Next(minValue, minValue + 21);
-    operand2 = randomNumber.Next(minValue, minValue + 21);
 
-    switch(game)
+    for(int i = 0; i < QuizLength; i++)
     {
-        case "addition":
-            result = operand1 + operand2;
-            operation = "+";
-            break;
 
-        case "subtraction":
-            result = operand1 - operand2;
-            operation = "-";
-            break;
+        operand1 = randomNumber.Next(minValue, minValue + stepSize);
+        operand2 = randomNumber.Next(minValue, minValue + stepSize);
 
-        case "multiplication":
-            result = operand1 * operand2;
-            operation = "*";
-            break;
+        switch(game)
+        {
+            case "addition":
+                result = operand1 + operand2;
+                operation = "+";
+                break;
 
-        case "division":
-            while (operand1 % operand2 != 0) 
-            {
-                operand2 = randomNumber.Next(1, 101);
-             } 
-            result = operand1 / operand2;
-            operation = "/";
-            break;
+            case "subtraction":
+                result = operand1 - operand2;
+                operation = "-";
+                break;
 
-        default:
-            break;
+            case "multiplication":
+                result = operand1 * operand2;
+                operation = "*";
+                break;
+
+            case "division":
+                while (operand2 == 0 || operand1 % operand2 != 0) 
+                {
+                    minValue = (difficulty == 1) ? 1 : minValue;
+                    operand2 = randomNumber.Next(minValue, minValue + stepSize);
+                } 
+                result = operand1 / operand2;
+                operation = "/";
+                break;
+
+            default:
+                break;
+        }
+
+        Console.WriteLine($"Q{i+1}: What is {operand1} {operation} {operand2}?");
+
+        int answer = 0;
+        bool validEntry = false;
+
+        do
+        {
+            readResult = Console.ReadLine();
+            validEntry = int.TryParse(readResult, out answer);
+            if (!validEntry)
+                Console.WriteLine("Only numbers can be accepted as valid answer.");
+
+        } while (!validEntry);
+
+        if (answer == result)
+            Console.WriteLine("That's correct. You scored 5 points\n");
+        else
+            Console.WriteLine("That's not correct\n.");
     }
-    
-    Console.WriteLine($"What is {operand1} {operation} {operand2}?");
-
-    int answer = 0;
-    bool validEntry = false;
-
-    do
-    {
-        readResult = Console.ReadLine();
-        validEntry = int.TryParse(readResult, out answer);
-        if (!validEntry)
-            Console.WriteLine("Only numbers can be accepted as valid answer.");
-    
-    } while (!validEntry);
-    
-    if (answer == result)
-        Console.WriteLine("That's correct. You scored 5 points");
-    else
-        Console.WriteLine("That's not correct.");
 }
 
 int SetDifficultyLevel (int difficulty)
 {
-    int minValue = 0;
-
     switch(difficulty)
     {
         case 1:
-            minValue = 0;
-            break;
+            return 0;
         
         case 2:
-            minValue = 20;
-            break;
+            return 20;
 
         case 3:
-            minValue = 40;
-            break;
+            return 40;
 
         case 4:
-            minValue = 60;
-            break;
+            return 60;
 
         case 5:
-            minValue = 80;
-            break;
+            return 80;
+
+        default:
+            return 0;
     }
 
-    return minValue;
 }
 
 int ReadUserInput()
@@ -179,3 +197,12 @@ int ReadUserInput()
 
 }
 
+bool PlayAgain()
+{
+    Console.WriteLine("Would you like to play again (Y/N)?");
+    string readResult = Console.ReadLine(); 
+    if (readResult != null)
+        return (readResult.ToLower() == "y");
+    else
+        return false;
+}
